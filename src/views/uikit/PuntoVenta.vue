@@ -25,28 +25,27 @@ export default {
             precioParcial: null
         });
 
-        const productoSeleccionado = ref(null); // Producto para eliminar
-        const productoEditando = ref(null);     // Producto para editar
+        const productoSeleccionado = ref(null); 
+        const productoEditando = ref(null);     
 
-        // Cálculos computados para el subtotal, IVA y total
         const subtotal = computed(() => tablaCompras.value.reduce((sum, p) => sum + p.precioParcial, 0));
         const iva = computed(() => subtotal.value * 0.16);
         const total = computed(() => subtotal.value + iva.value);
 
-        // Funciones para editar y eliminar productos
+        function isNumber(value) {
+            return !isNaN(value) && value.trim() !== '';
+        }
+
         function editarProducto(row) {
-            // Guardamos los datos del producto para edición.
             productoEditando.value = { ...row };
             nomp.value = row.nomProducto;
             cantidad.value = row.cantidad;
             precioUnitario.value = row.precioUnitario;
-
-            // Abrimos el diálogo.
             visibleUpdate.value = true;
          }
 
         function updateProducto() {
-            if (productoEditando.value) {
+            if (productoEditando.value && isNumber(cantidad.value) && isNumber(precioUnitario.value)) {
                 const index = tablaCompras.value.findIndex(item => item.cns === productoEditando.value.cns);
                 if (index !== -1) {
                     tablaCompras.value[index].nomProducto = nomp.value;
@@ -54,16 +53,14 @@ export default {
                     tablaCompras.value[index].precioUnitario = parseFloat(precioUnitario.value);
                     tablaCompras.value[index].precioParcial = tablaCompras.value[index].cantidad * tablaCompras.value[index].precioUnitario;
 
-                    // Muestra el mensaje solo después de la actualización
                     toast.add({ severity: 'success', summary: 'Actualización Exitosa', detail: 'Producto actualizado correctamente', life: 3000 });
-
-                    // Cerramos el diálogo y limpiamos el estado.
                     visibleUpdate.value = false;
                     productoEditando.value = null;
                 }
+            } else {
+                toast.add({ severity: 'error', summary: 'Error de Validación', detail: 'Cantidad y Precio deben ser numéricos', life: 3000 });
             }
         }
-
 
         async function eliminarProducto(row) {
             productoSeleccionado.value = row; 
@@ -81,7 +78,7 @@ export default {
         }
 
         async function registrarCompra() {
-            if (productoItem.value.nomProducto?.trim() !== '' && productoItem.value.cantidad && productoItem.value.precioUnitario) {
+            if (productoItem.value.nomProducto?.trim() !== '' && isNumber(productoItem.value.cantidad) && isNumber(productoItem.value.precioUnitario)) {
                 tablaCompras.value.push({
                     cns: tablaCompras.value.length + 1,
                     nomProducto: productoItem.value.nomProducto,
@@ -94,6 +91,8 @@ export default {
                 productoItem.value.nomProducto = '';
                 productoItem.value.cantidad = '';
                 productoItem.value.precioUnitario = '';
+            } else {
+                toast.add({ severity: 'error', summary: 'Error de Validación', detail: 'Cantidad y Precio deben ser numéricos', life: 3000 });
             }
         }
 
@@ -125,7 +124,6 @@ export default {
     }
 };
 </script>
-
 
 <template>
 	<div class="p-grid">
