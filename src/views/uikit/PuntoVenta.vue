@@ -35,12 +35,15 @@ export default {
 
         // Funciones para editar y eliminar productos
         function editarProducto(row) {
+            // Guardamos los datos del producto para edición.
             productoEditando.value = { ...row };
             nomp.value = row.nomProducto;
             cantidad.value = row.cantidad;
             precioUnitario.value = row.precioUnitario;
+
+            // Abrimos el diálogo.
             visibleUpdate.value = true;
-        }
+         }
 
         function updateProducto() {
             if (productoEditando.value) {
@@ -51,13 +54,16 @@ export default {
                     tablaCompras.value[index].precioUnitario = parseFloat(precioUnitario.value);
                     tablaCompras.value[index].precioParcial = tablaCompras.value[index].cantidad * tablaCompras.value[index].precioUnitario;
 
+                    // Muestra el mensaje solo después de la actualización
                     toast.add({ severity: 'success', summary: 'Actualización Exitosa', detail: 'Producto actualizado correctamente', life: 3000 });
 
+                    // Cerramos el diálogo y limpiamos el estado.
                     visibleUpdate.value = false;
                     productoEditando.value = null;
                 }
             }
         }
+
 
         async function eliminarProducto(row) {
             productoSeleccionado.value = row; 
@@ -167,7 +173,7 @@ export default {
             <!--  le quite el class="p-button-success p-mr-2" al boton a regristrar y le puse completa la estructura de Button para que jale 
             el color que quiera el usuario  (<Button icon="pi pi-pencil" type="button" class="p-button-success p-mr-2 p-mb-1" @click="editarProducto(slotProps.data)"></Button>)-->
                         <Button icon="pi pi-pencil" type="button" @click="editarProducto(slotProps.data)"></Button>
-                        <Dialog v-model:visible="visibleUpdate" modal header="Actualizar datos de un producto" :style="{ width: '45vw' }">
+                        <Dialog v-model:visible="visibleUpdate" modal header="Actualizar datos de un producto" :style="{ width: '45vw' }" draggable="false" style="position: fixed;">
                             <p>
                                 <div class="flex gap-2">
                                     <div class="flex-auto">
