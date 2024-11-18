@@ -13,7 +13,6 @@ const model = ref([
         items: [
             { label: 'Demo clientes', icon: 'pi pi-fw pi-id-card', to: '/uikit/DemoClientes' },
             { label: 'Punto de venta', icon: 'pi pi-fw pi-shopping-cart', to: '/uikit/PuntoVenta' },
-            { label: 'UI API', icon: 'pi pi-fw pi-shopping-cart', to: '/uikit/UiApi' },
             { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', to: '/uikit/formlayout' },
             { label: 'Input', icon: 'pi pi-fw pi-check-square', to: '/uikit/input' },
             { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
