@@ -22,12 +22,7 @@ const router = createRouter({
                     path: '/uikit/PuntoVenta',
                     name: 'PuntoVenta',
                     component: () => import('@/views/uikit/PuntoVenta.vue')
-                },
-                {
-                    path: '/uikit/UiApi',
-                    name: 'UiApi',
-                    component: () => import('@/views/uikit/UiApi.vue')
-                },                               
+                },                              
                 {
                     path: '/uikit/formlayout',
                     name: 'formlayout',
